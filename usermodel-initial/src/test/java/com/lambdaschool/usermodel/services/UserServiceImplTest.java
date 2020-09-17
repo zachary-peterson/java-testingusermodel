@@ -1,6 +1,7 @@
 package com.lambdaschool.usermodel.services;
 
 import com.lambdaschool.usermodel.UserModelApplication;
+import com.lambdaschool.usermodel.exceptions.ResourceNotFoundException;
 import com.lambdaschool.usermodel.models.Role;
 import com.lambdaschool.usermodel.models.User;
 import com.lambdaschool.usermodel.models.UserRoles;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Set;
 
@@ -54,6 +56,12 @@ public class UserServiceImplTest
         assertEquals("barnbarn", userService.findUserById(11).getUsername());
     }
 
+    @Test(expected = ResourceNotFoundException.class)
+    public void aa_findUserByIdNotFound()
+    {
+        assertEquals("", userService.findUserById(1000).getUsername());
+    }
+
     @Test
     public void b_findByNameContaining()
     {
@@ -76,7 +84,13 @@ public class UserServiceImplTest
     @Test
     public void e_findByName()
     {
-        assertEquals("puttat", userService.findUserById(13).getUsername());
+        assertEquals("puttat", userService.findByName("puttat").getUsername());
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void ee_findByNameNotFound()
+    {
+        assertEquals("failed", userService.findByName("Testing").getUsername());
     }
 
     @Test
@@ -102,6 +116,18 @@ public class UserServiceImplTest
     @Test
     public void g_update()
     {
+        Role r2 = new Role("user");
+        r2.setRoleid(2);
+        String user5Name = "puttat";
+        User u4 = new User(user5Name,
+            "password",
+            "puttat@school.lambda");
+        u4.setUserid(13);
+        u4.getRoles()
+            .add(new UserRoles(u4, r2));
+        User addUser = userService.update(u4,13);
+        assertNotNull(addUser);
+        assertEquals(user5Name,addUser.getUsername());
     }
 
 

@@ -88,8 +88,7 @@ public class UserServiceImpl
 
         if (user.getUserid() != 0)
         {
-            userrepos.findById(user.getUserid())
-                    .orElseThrow(() -> new ResourceNotFoundException("User id " + user.getUserid() + " not found!"));
+            userrepos.findById(user.getUserid()).orElseThrow(() -> new ResourceNotFoundException("User id " + user.getUserid() + " not found!"));
             newUser.setUserid(user.getUserid());
         }
 
@@ -131,8 +130,7 @@ public class UserServiceImpl
 
         if (user.getUsername() != null)
         {
-            currentUser.setUsername(user.getUsername()
-                                            .toLowerCase());
+            currentUser.setUsername(user.getUsername().toLowerCase());
         }
 
         if (user.getPassword() != null)
@@ -142,35 +140,26 @@ public class UserServiceImpl
 
         if (user.getPrimaryemail() != null)
         {
-            currentUser.setPrimaryemail(user.getPrimaryemail()
-                                                .toLowerCase());
+            currentUser.setPrimaryemail(user.getPrimaryemail().toLowerCase());
         }
 
-        if (user.getRoles()
-                .size() > 0)
+        if (user.getRoles().size() > 0)
         {
-            currentUser.getRoles()
-                    .clear();
+            currentUser.getRoles().clear();
             for (UserRoles ur : user.getRoles())
             {
-                Role addRole = roleService.findRoleById(ur.getRole()
-                                                                .getRoleid());
+                Role addRole = roleService.findRoleById(ur.getRole().getRoleid());
 
-                currentUser.getRoles()
-                        .add(new UserRoles(currentUser, addRole));
+                currentUser.getRoles().add(new UserRoles(currentUser, addRole));
             }
         }
 
-        if (user.getUseremails()
-                .size() > 0)
+        if (user.getUseremails().size() > 0)
         {
-            currentUser.getUseremails()
-                    .clear();
+            currentUser.getUseremails().clear();
             for (Useremail ue : user.getUseremails())
             {
-                currentUser.getUseremails()
-                        .add(new Useremail(currentUser,
-                                           ue.getUseremail()));
+                currentUser.getUseremails().add(new Useremail(currentUser, ue.getUseremail()));
             }
         }
 
