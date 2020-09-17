@@ -4,6 +4,7 @@ import com.lambdaschool.usermodel.UserModelApplication;
 import com.lambdaschool.usermodel.models.Role;
 import com.lambdaschool.usermodel.models.User;
 import com.lambdaschool.usermodel.models.UserRoles;
+import com.lambdaschool.usermodel.models.Useremail;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -81,12 +82,28 @@ public class UserServiceImplTest
     @Test
     public void f_save()
     {
+        String testName = "java";
+
+        Role testRole = new Role("test");
+        testRole.setRoleid(1);
+
+        User u2 = new User(testName,
+            "thispass",
+            "cantbesame@why.com");
+
+        u2.getRoles().add(new UserRoles(u2, testRole));
+
+        User test = userService.save(u2);
+
+        assertNotNull(test);
+        assertEquals(testName, test.getUsername());
     }
 
     @Test
     public void g_update()
     {
     }
+
 
     @Test
     public void h_deleteAll()
